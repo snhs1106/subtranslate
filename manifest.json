@@ -1,0 +1,14 @@
+{
+    "manifest_version": 3,
+    "name": "Subtitle Translator",
+    "version": "1.0",
+    "description": "A Chrome extensiion to grab a url",
+    "permissions": ["activeTab"],
+    "background":{
+        "service_worker": "popup.js"
+    },
+    "action": {
+        "default_popup": "popup.html"  
+    }
+    
+}
