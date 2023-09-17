@@ -1,6 +1,18 @@
 body {
     width: 300px;
 }
-#subtitleContainer {
-    /* Your CSS styles */
+
+.popup-translation {
+    position: absolute;
+    bottom: 40px;  
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 10000;  
+    width: auto;
+    max-width: 80%;
+    text-align: center;
+    display: none;  
 }
