@@ -2,50 +2,75 @@ let processingCaption = false; // A flag to check if we're currently processing 
 let video_paused = false;// A flag to check if the video is paused
 
 const handleWordClick = async (event) => {
-    console.log(event.target.textContent);
 
     const videoPlayer = document.querySelector('.video-stream.html5-main-video');
     if (videoPlayer && !video_paused) {
-        videoPlayer.click();  // Toggle play/pause
-        video_paused = true;
+        videoPlayer.pause();  // Pause the video
+        video_paused = true;  // Set the flag to indicate the video is paused
     }
 
-    // Create the pop up
-    // Send a message to the background script
-    // chrome.runtime.sendMessage({ action: 'translate', word: wordToTranslate }, (response) => {
-    //     if (response && response.translatedWord) {
-    //         // Handle the response and display in the popup
-    //         popup.textContent = response.translatedWord;
-    //         popup.style.display = 'block';
-    //     }
-    // });
+     // Create the popup or use an existing one
+     let popup = document.querySelector('.popup-translation');
+     if (!popup) {
+         popup = document.createElement('div');
+         popup.className = 'popup-translation';
+         // Apply styles directly to the popup
+         Object.assign(popup.style, {
+             width: '300px',
+             backgroundColor: 'white',
+             border: '1px solid #ccc',
+             boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+             borderRadius: '5px',
+             padding: '10px',
+             fontFamily: 'Arial, sans-serif',
+             fontSize: '14px',
+             position: 'fixed',
+             top: '50%',
+             left: '30%',
+             transform: 'translate(-50%, -50%)',
+             zIndex: '9999'
+         });
+         document.body.appendChild(popup);
+     }
+ 
+    // Send a message to the background script for translation
+    chrome.runtime.sendMessage({ action: 'translate', word: wordToTranslate }, (response) => {
+        if (response && response.translatedWord) {
+            // Display the translated word in the popup
+            popup.textContent = response.translatedWord;
 
-    // Create the popup or use an existing one
-    let popup = document.querySelector('.popup-translation');
-    if (!popup) {
-        popup = document.createElement('div');
-        popup.style.position = 'fixed';
-        popup.style.bottom = '50px';  // Position it 50px from the bottom. Adjust as needed.
-        popup.style.left = '50%';     // Center it horizontally
-        popup.style.transform = 'translateX(-50%)';  // Centering trick
-        popup.style.backgroundColor = 'black';
-        popup.style.color = 'white';
-        popup.style.padding = '10px';
-        popup.style.borderRadius = '5px';
-        popup.style.zIndex = '1000';
-        popup.className = 'popup-translation';
-        document.body.appendChild(popup);
-    }
-
-    // Set the translated word and show the popup
-    popup.textContent = "Hello world!";
-    popup.style.display = 'block';
-
-    // Optionally, hide the popup after a few seconds or on another word click
-    setTimeout(() => {
-        popup.style.display = 'none';
-    }, 3000);  // Adjust the time as needed
+            // Append the close button to the popup
+            popup.appendChild(closeButton);
+            popup.style.display = 'block';
+        }
+    });
+     
+     // Add the 'X' close button
+     let closeButton = document.createElement('span');
+     closeButton.textContent = 'X';
+     closeButton.onclick = () => {
+         popup.style.display = 'none';
+         if (videoPlayer && video_paused) {
+             videoPlayer.play(); // Unpause the video
+             video_paused = false;
+         }
+     };
+     // Apply styles directly to the close button
+     Object.assign(closeButton.style, {
+         position: 'absolute',
+         top: '5px',
+         right: '5px',
+         border: 'none',
+         background: 'transparent',
+         cursor: 'pointer',
+         fontSize: '16px'
+     });
+ 
+     popup.appendChild(closeButton);
+ 
+     popup.style.display = 'block';
 }
+
 
 
 const observer = new MutationObserver(mutations => {
