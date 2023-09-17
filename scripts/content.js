@@ -5,46 +5,134 @@ console.log("hello plz plz");
 
 const textToTranslate = ["this is the text to translate"];
 const targetLang = "ES";
+const apiKey = "48322ac8-b966-16c7-9c4b-e4bd45f322fb:fx";
+const url = 'https://api-free.deepl.com/v2/translate';
+const headers = {
+    'Authorization': `DeepL-Auth-Key ${apiKey}`,
+    'User-Agent': 'SubTranslate/1.0',
+    'Content-Type': 'application/json',
+  };
 
-document.addEventListener('DOMContentLoaded', function () {
-  const grabtranslateButton = document.getElementById('translatetext');
-  const translateDisplay = document.getElementById('displaytranslate');
 
-  console.log("doc listener set up");
 
-  grabtranslateButton.addEventListener('click', function () {
-    translateDisplay.textContent = "clicked";
-    console.log("running translate");
+console.log("hello plz plz 2");
 
-    const requestBody = JSON.stringify({
-      text: textToTranslate,
-      target_lang: targetLang,
-    });
+
+
+
+function translate_str(stringy, targ_lang_var){
     
-    const headers = {
-      'Authorization': `DeepL-Auth-Key ${apiKey}`,
-      'Content-Type': 'application/json',
-    };
-    
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: headers,
-      body: requestBody,
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Handle the translated response here
-        
-        translateDisplay.textContent = data;
-      })
-      .catch(error => {
-        // Handle any errors here
-        translateDisplay.textContent = "error";
-        console.error('Error:', error);
+    chrome.runtime.sendMessage({ 
+        action: "translate", 
+        textToTranslate: textToTranslate, 
+        targetLang: targetLang 
+      }, response => {
+        if (response.result) {
+          // Handle the API response data here
+          console.log(response.result);
+        } else {
+          // Handle any errors here
+          console.error('Error:', response.error);
+        }
       });
       
-  });
-});
+}
+
+
+
+
+
+
+// function translate_str(stringy, targ_lang){
+    
+//     console.log("hello plz plz 3");
+
+//     const translateDisplay = document.getElementById('displaytranslate');
+
+//     console.log("hello plz plz 4");
+
+//     const requestBody = JSON.stringify({
+//         text: stringy,
+//         target_lang: targ_lang,
+//       });
+      
+//       const headers = {
+//         'Authorization': `DeepL-Auth-Key ${apiKey}`,
+//         'Content-Type': 'application/json',
+//       };
+      
+//       fetch(apiUrl, {
+//         method: 'POST',
+//         headers: headers,
+//         body: requestBody,
+//       })
+//         .then(response => response.json())
+//         .then(data => {
+//           // Handle the translated response here
+          
+//           translateDisplay.textContent = data;
+//         })
+//         .catch(error => {
+//           // Handle any errors here
+//           translateDisplay.textContent = "error";
+//           console.error('Error:', error);
+//         });
+
+// }
+
+
+
+
+
+
+
+
+translate_str(textToTranslate, targetLang);
+
+
+
+
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     console.log("hello plz plz 3");
+//   const grabtranslateButton = document.getElementById('translatetext');
+//   const translateDisplay = document.getElementById('displaytranslate');
+//   console.log("hello plz plz 4");
+//   console.log("doc listener set up");
+
+//   grabtranslateButton.addEventListener('click', function () {
+//     translateDisplay.textContent = "clicked";
+//     console.log("running translate");
+
+//     const requestBody = JSON.stringify({
+//       text: textToTranslate,
+//       target_lang: targetLang,
+//     });
+    
+//     const headers = {
+//       'Authorization': `DeepL-Auth-Key ${apiKey}`,
+//       'Content-Type': 'application/json',
+//     };
+    
+//     fetch(apiUrl, {
+//       method: 'POST',
+//       headers: headers,
+//       body: requestBody,
+//     })
+//       .then(response => response.json())
+//       .then(data => {
+//         // Handle the translated response here
+        
+//         translateDisplay.textContent = data;
+//       })
+//       .catch(error => {
+//         // Handle any errors here
+//         translateDisplay.textContent = "error";
+//         console.error('Error:', error);
+//       });
+      
+//   });
+// });
 
 
 
