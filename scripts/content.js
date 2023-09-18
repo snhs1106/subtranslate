@@ -5,13 +5,6 @@ console.log("hello plz plz");
 
 const textToTranslate = ["this is the text to translate"];
 const targetLang = "ES";
-const apiKey = "48322ac8-b966-16c7-9c4b-e4bd45f322fb:fx";
-const url = 'https://api-free.deepl.com/v2/translate';
-const headers = {
-    'Authorization': `DeepL-Auth-Key ${apiKey}`,
-    'User-Agent': 'SubTranslate/1.0',
-    'Content-Type': 'application/json',
-  };
 
 
 
@@ -22,6 +15,8 @@ console.log("hello plz plz 2");
 
 function translate_str(stringy, targ_lang_var){
     
+    console.log("hello plz plz 3");
+
     chrome.runtime.sendMessage({ 
         action: "translate", 
         textToTranslate: textToTranslate, 
@@ -35,7 +30,7 @@ function translate_str(stringy, targ_lang_var){
           console.error('Error:', response.error);
         }
       });
-      
+
 }
 
 
@@ -47,7 +42,7 @@ function translate_str(stringy, targ_lang_var){
     
 //     console.log("hello plz plz 3");
 
-//     const translateDisplay = document.getElementById('displaytranslate');
+    // const translateDisplay = document.getElementById('displaytranslate');
 
 //     console.log("hello plz plz 4");
 
