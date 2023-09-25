@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Translation App</title>
+</head>
+<body>
+    <h1>Translation App</h1>
+    <textarea id="inputText" rows="4" cols="50">Enter text to translate</textarea>
+    <button id="translateButton">Translate</button>
+    <div id="translationResult"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const apiKey = '48322ac8-b966-16c7-9c4b-e4bd45f322fb:fx';
+            const apiUrl = 'https://api-free.deepl.com/v2/translate';
+
+            const inputText = document.getElementById('inputText');
+            const translateButton = document.getElementById('translateButton');
+            const translationResult = document.getElementById('translationResult');
+
+            translateButton.addEventListener('click', function () {
+                translationResult.textContent = "Translating...";
+
+                const textToTranslate = inputText.value;
+                const targetLang = "ES";
+
+                const requestBody = JSON.stringify({
+                    text: textToTranslate,
+                    target_lang: targetLang,
+                });
+
+                const headers = {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json',
+                };
+
+                fetch(apiUrl, {
+                    method: 'POST',
+                    headers: headers,
+                    body: requestBody,
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.translations && data.translations.length > 0) {
+                            translationResult.textContent = data.translations[0].text;
+                        } else {
+                            translationResult.textContent = "Translation not available";
+                        }
+                    })
+                    .catch(error => {
+                        translationResult.textContent = "Error occurred during translation";
+                        console.error('Error:', error);
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
