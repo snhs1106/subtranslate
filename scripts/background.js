@@ -1,3 +1,4 @@
+
 const apiKey = "48322ac8-b966-16c7-9c4b-e4bd45f322fb:fx";
 const url = 'https://api-free.deepl.com/v2/translate';
 const headers = {
@@ -33,3 +34,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return true; // Indicates that we're using sendResponse asynchronously
     }
   });
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === 'translate') {
+        const word = message.word;
+
+        // Here, you can call an external API to get the translation. 
+        // For demonstration purposes, let's assume the translation is the same word:
+        const translatedWord = word;  // Replace this with actual translation logic
+
+        // Send back the translated word
+        sendResponse({ translatedWord });
+    }
+});
+
